@@ -1,0 +1,3 @@
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+# RewriteEngine On
+# RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

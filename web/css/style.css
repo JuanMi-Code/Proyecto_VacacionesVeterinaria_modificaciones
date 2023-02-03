@@ -1,0 +1,189 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+header{
+    background-color: rgb(6, 6, 150);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+}
+#titulo{
+    color: white;
+    font-size: x-large;
+}
+.nav{
+    display: flex;
+    justify-content: center;
+}
+li{
+    width: 150px;
+    border: 1px solid white;
+    text-align: center;
+    height: 50px;
+    background-color: white;
+    border: 1px solid black;
+}
+ul,
+ol {
+    list-style: none;
+}
+
+.nav>li {
+    float: left;
+}
+
+.nav li a {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    padding: 10px 12px;
+    display: block;
+    height: 30px;
+}
+
+.nav li a:hover {
+    background-color: lightgray;
+}
+
+.nav li ul {
+    display: none;
+    position: absolute;
+    min-width: 140px;
+}
+
+.nav li:hover>ul {
+    display: block;
+}
+
+.nav li ul li {
+    position: relative;
+}
+
+.nav li ul li ul {
+    right: -140px;
+    top: 0px;
+}
+
+
+/* Home */
+#perrosHome{
+    width: 50%;
+}
+#homeMain{
+    text-align: center;
+}
+
+
+/* Footer */
+footer{
+    color: white;
+    font-size: x-large;
+    background-color: rgb(6, 6, 150);
+    text-align: center;
+    padding: 20px;
+}
+
+
+/* login */
+#loginMain{
+    text-align: center;
+    margin: auto;
+    border: 5px solid black;
+    border-radius: 10px;
+    width: 20%;
+    padding: 20px;
+}
+#error{
+    color: red;
+    text-align: center;
+}
+
+/* Tabla animales paginada */
+.table1Verde{
+    background-color: lightgreen;
+}
+.table1Azul{
+    background-color: lightblue;
+}
+.table1Paginacion{
+    background-color: lightseagreen;
+    border: 1px solid white;
+    text-decoration: none;
+}
+
+
+/* ************** headerLogin ************** */
+#fotoPerfil{
+    width: 35px;
+    height: 35px;
+}
+#loginImgNombre{
+    display: flex;
+    background-color: white;
+}
+#main1{
+    text-align: center;
+}
+#table1{
+    margin: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 2px;
+    width: 30%;
+}
+#table1>th{
+    background-color: lightgreen;
+}
+table,th,tr,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 2px;
+}
+#fotoAnimal{
+    width: 100px;
+}
+#tablaCitas{
+    margin: auto;
+    text-align: center;
+}
+
+/* Tabla pedir citas */
+.intervalo{
+    background-color: lightblue;
+}
+.pedirCitaPaginacion{
+    background-color: lightblue;
+    border: 1px solid white;
+    text-decoration: none;
+}
+.tablaCitashead{
+    background-color: lightgreen;
+}
+.celda_gris{
+    background-color: grey;
+}
+.celda_naranja{
+    background-color: orange;
+}
+.celda_rojo{
+    background-color: lightcoral;
+}
+.celda_rojo_intenso{
+    background-color: red;
+}
+
+/* Detalles Veterinario */
+#homeMainVet{
+    text-align: center;
+    margin: auto;
+}
+#fotoVeterinario{
+    width: 100px;
+}
+
+/* Tabla vacunar */
+.fotoVacunar{
+    width: 200px;
+}

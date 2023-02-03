@@ -1,0 +1,149 @@
+html,
+body,
+.contenido,
+.tabs,
+.tabbed-content {
+    float: none;
+}
+
+.tab {    
+    break-before: always;
+    page-break-before: always;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #666;
+    background: #f2f2f2;
+    font-size: 1em;
+    line-height: 1.5em;
+    padding-top: 80px;
+}
+
+h1 {
+    font-size: 2.3em;
+    line-height: 1.3em;
+    margin: 15px 0;
+    text-align: center;
+    font-weight: 300;
+}
+h2 {
+    font-size: 2em;
+    line-height: 1.3em;
+    margin: 15px 0;
+    text-align: center;
+    font-weight: 500;
+    color: black;
+}
+p {
+    margin: 0 0 1.5em 0;
+}
+.izq {       
+    position: fixed;
+    width: auto;
+    height: 80px;
+}
+.der {
+    position: fixed;   
+    right: 3px;
+    max-width: auto;
+    height: 100px;
+}
+.pie {
+    position: fixed;
+    background: rgb(115, 116, 119);
+    color: white;
+    height: 100px;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+}
+.nombre {
+    position: fixed;
+    left: 0px;
+    margin-top: 76px;   
+    color: white;
+}
+section
+{
+    page-break-after: always;
+}
+#dos
+{
+    padding-top: 15%;
+    padding-left: 50%;
+    padding-right: 30px;
+    text-align: justify;
+}
+
+/* Estilos para la tabla */
+table {
+    margin-top: -78px;
+    width: 100%;
+    /* Ocupa todo el ancho del contenedor */
+    border-collapse: collapse;
+    border: 8px  rgb(115, 116, 119);;
+    border-style: outset;    
+}
+/* Estilos para la cabecera de la tabla */
+thead {
+    background-color: #f2f2f2;
+    /* Color de fondo */
+    font-weight: bold;
+    /* Negrita */
+}
+td,
+th {
+    margin-top: 0px;
+    padding: 10px;    
+    border: 1px solid #ccc;/* Borde */
+}
+
+/* Estilos para el pie de la tabla */
+tfoot {
+    background-color: #f2f2f2;
+    /* Color de fondo */
+    font-weight: bold;
+    /* Negrita */
+}
+.foto {
+    background-color: white;
+}
+.fotoAnim{
+    width: 50px;
+}
+
+.center {
+    margin-top: 0px;
+    height: 250px;
+    width: 300px;
+    padding-left: 200px;
+}
+.firma {
+    padding-left: 19%;
+    width: 150px;
+    height: 150px;
+}
+.estrecho {
+    padding: 0px, 0px;
+    margin: 0px;
+
+}
+.firmaP {  
+    width: 66px;
+    height: 50px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+.vacunas
+{
+    text-align: center;
+}
+.fondo
+{
+    background-color: rgb(13, 83, 173);
+    color:white;
+}

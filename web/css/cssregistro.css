@@ -1,0 +1,86 @@
+.form-register {
+    width: 500px;
+    background: #24303c;
+    padding-left: 30px;
+    padding-right: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-family: 'calibri';
+    color: white;
+    box-shadow: 7px 13px 37px #000;
+}
+
+.form-register h4 {
+    font-size: 22px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.controls {
+    width: 100%;
+    background: #24303c;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    border: 1px solid #1f53c5;
+    font-family: 'calibri';
+    font-size: 18px;
+    color: white;
+}
+
+.form-register p {
+    height: 30px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 40px;
+}
+
+.form-register a {
+    color: white;
+    text-decoration: none;
+}
+
+.form-register a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.form-register .botons {
+    width: 100%;
+    background: #1f53c5;
+    border: none;
+    padding: 10px;
+    color: white;
+    margin: 12px 0;
+    font-size: 16px;
+}
+
+input[type=file] {
+    color: transparent !important;
+}
+
+[id="foto1"]::before {
+    content: "Introduce tu avatar";
+    color: white;
+    margin-right: 10px;
+}
+
+[id="foto2"]::before {
+    content: "Introduce una fotografía de tu mascota";
+    color: white;
+    margin-right: 10px;
+}
+
+input[value^="Error:"] {
+    color: red;
+}
+
+.form-register select:required {
+    border: 3px solid red;
+}

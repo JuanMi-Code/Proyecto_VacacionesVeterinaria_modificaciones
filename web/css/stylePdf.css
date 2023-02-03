@@ -1,0 +1,22 @@
+html,
+body,
+.contenido,
+.tabs,
+.tabbed-content {
+    float: none;
+}
+table,th,tr,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 2px;
+}
+tr:nth-child(odd){
+    background-color: lightblue;
+}
+tr:nth-child(even){
+    background-color: lightseagreen;
+}
+/* Tabla vacunar */
+.fotoVacunar{
+    width: 200px;
+}
