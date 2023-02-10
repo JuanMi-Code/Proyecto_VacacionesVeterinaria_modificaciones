@@ -28,7 +28,7 @@ class Post {
                     // var_dump(self::autenticarTokenJWT($jwtee));
 
                 } else {
-                    header("HTTP/1.0 400 Bad Request");
+                    header("HTTP/1.0 400 Bad Request");
                 }
             } else {
                 //Comprobamos si es veterinario
@@ -50,14 +50,14 @@ class Post {
                         self::crearTokenJWT($id, $data['alias'], $rol);
 
                     } else {
-                        header("HTTP/1.0 400 Bad Request");
+                        header("HTTP/1.0 400 Bad Request");
                     }
                 } else {
-                    header("HTTP/1.0 400 Bad Request");
+                    header("HTTP/1.0 400 Bad Request");
                 }
             }
         } else {
-            header("HTTP/1.0 400 Bad Request");
+            header("HTTP/1.0 400 Bad Request");
         }
     }
     private static function crearTokenJWT($id, $alias, $rol) {
@@ -85,7 +85,7 @@ class Post {
             exit("Error: " . $e->getMessage());
         }
     }
-    private static function autenticarTokenJWT($jwt) {
+    public static function autenticarTokenJWT($jwt) {
         $key = 'PalabraSecreta';
         try {
             $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
@@ -105,17 +105,58 @@ class Post {
         $path = './imgs/';
         $data = json_decode(file_get_contents('php://input'), true);
 
+        // var_dump($_SERVER);
+
         if (!empty($_SERVER['HTTP_AUTHORIZATION'])) {
             $jwt = $_SERVER['HTTP_AUTHORIZATION'];
             $jwt = explode(' ', $jwt);
             $datos = self::autenticarTokenJWT($jwt[1]);
-            var_dump($datos);
+            
+            // var_dump($datos);
+            $data = json_decode(file_get_contents('php://input'), true);
+            // var_dump($data);
+
+            if ($data['imagenAnimal']=="") {
+                $imagen = "animalDefecto.png";
+            } else {
+                // file_put_contents('pruebas/ficheroBase64.txt', $base64); //mime, peso 1.5mb
+                $imagen = self::base64_datos($data['imagenAnimal']);
+            }
+            $consulta = new AnimalesDao();
+            $numHistorial=$consulta->insertarAnimal($datos['id'],$data['nomAnimal'],$data['idTipo'],$imagen);
+
             exit;
         } else {
-            header("HTTP/1.0 401 Unauthorized");
+            header("HTTP/1.0 401 Unauthorized");
             exit;
         }
-        $data = json_decode(file_get_contents('php://input'), true);
     }
+    public static function base64_datos($base64_datos, $path="../../web/animales/", $nombre = 'nuevo')
+{
+	// Extraigo el tipo mime del formato de la imagen
+	$mime = mime_content_type($base64_datos);
+	//Establezco los tipos permitidos, en este caso, solo imágenes
+	$tipos_permitidos = ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp'];
+    // FALTA CONTROLAR EL PESO
+
+	if (in_array($mime, $tipos_permitidos)) {
+		$extension = explode('/', $mime);
+		$extension = $extension[1];
+		// $nombre = $nombre . time() . '.' . $extension;
+		$nuevo_fichero_ruta = $path . $nombre . time() . '.' . $extension;
+        // var_dump($nuevo_fichero_ruta);
+
+		//Debo quitarle la cabecera añadida
+		//Por ejemplo:  data:image/jpg;base64,
+		$quitarCabecera = explode(',', $base64_datos);
+
+		//Guardo el fichero en la ruta indicada
+		file_put_contents($nuevo_fichero_ruta, base64_decode($quitarCabecera[1]));
+		//retorno la ruta del fichero en el servidor del fichero		
+		return $nuevo_fichero_ruta;
+	} else {
+		return false;
+	}
+}
 }
 ?>

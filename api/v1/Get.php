@@ -15,55 +15,119 @@ class Get {
         7. 500 : Internal Server Error → Se ha producido un error interno
    */
     public static function getClientesAnimales() {
-        $ruta = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']).'/' ;
-        $rutaSeparada = explode('/',$ruta);
+        $ruta = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/';
+        $rutaSeparada = explode('/', $ruta);
         // var_dump($rutaSeparada);
         $rutaFinal = $rutaSeparada[0] . '//' . $rutaSeparada[2] . '/' . $rutaSeparada[3] . '/';
         // $nuevaRuta=$
 
-        
-        if (isset($_SERVER['PATH_INFO'])) {
-        // Significa que me llega el id del cliente
-        // $info = explode("/", $_SERVER['PATH_INFO']);
-        // $id = $info[1];
+        $rutaDestino = explode("/",$_SERVER['REQUEST_URI']);
 
-        // include_once('./modelo/alimentosDao.php');
-        // $consulta = new AlimentosDao();
-        // $alimentos=$consulta->select_alimentos_id($id);
-        // var_dump($alimentos);
-
-        // foreach ($alimentos as $key => $value) {
-        //     $alimentos[$key]['imagen'] = $ruta.'imgs/'.$value['imagen'];
-        // }
-        // echo $datos = json_encode($alimentos);
-
-    } else {
-
-            // var_dump($_SERVER);
-
-        include_once('../../model/ClientesAnimalesDao.php');
-        $consulta = new ClientesAnimalesDao();
-        $clientes=$consulta->select_clientes();
-
-        foreach ($clientes as $key => $cliente) {
-            $cliente->foto=$rutaFinal.'web/personas/'.$cliente->foto;
-            $consulta = new ClientesAnimalesDao();
-            $animales=$consulta->select_animales_cliente($cliente->idCliente);
+        if (is_numeric($rutaDestino[5]=="cliente"&&is_numeric($rutaDestino[6])&&$rutaDestino[7]=="animal"&&is_numeric($rutaDestino[8]))) {
             
-            foreach ($animales as $key => $animal) {
+            echo "hola";
+
+        }else if (isset($_REQUEST['inicio'])&&isset($_REQUEST['cantidad'])) {
+            
+            $todasFotosAnim=[];
+
+            // var_dump($_REQUEST);
+            $inicio=$_REQUEST['inicio'];
+            $cantidad=$_REQUEST['cantidad'];
+
+            $consulta=new ClientesAnimalesDao();
+            $cli=$consulta->select_clientes();
+            // var_dump($cli);
+
+            foreach ($cli as $key => $cliente) {
+                $cliente->foto = $rutaFinal . 'web/personas/' . $cliente->foto;
                 $consulta = new ClientesAnimalesDao();
-                $fotoAnimal=$consulta->select_fotos_animal($animal->NumHistorial);
+                $animales=$consulta->select_animales_cliente_paginado($cliente->idCliente,$inicio,$cantidad);
                 
-                $animal->nombreFoto = (array) $fotoAnimal;
+                //foto del animal anterior
+                foreach ($animales as $key => $animal) {
+                    $consulta = new ClientesAnimalesDao();
+                    $fotoAnimal = $consulta->select_fotos_animal($animal->NumHistorial);
+                    
+                    foreach ($fotoAnimal as $key => $value) {
+                        array_push($todasFotosAnim,$rutaFinal . 'web/animales/' . $value['nombreFoto']);
+                    }
+
+                    $animal->nombreFoto = $todasFotosAnim;
+                    $todasFotosAnim = [];
+                }
+                $cliente->animales = (array)$animales;
+            }
+            echo $datos = json_encode(array("clientes" => $cli));
+
+
+        }else if (isset($_SERVER['PATH_INFO'])) {
+            // var_dump($_SERVER['PATH_INFO']);
+            // Significa que me llega el id del cliente
+            $info = explode("/", $_SERVER['PATH_INFO']);
+            $id = $info[1];
+
+            $consulta = new ClientesAnimalesDao();
+            $anim = $consulta->select_animales_id($id);
+            $animales = [];
+            foreach ($anim as $key => $value) {
+                // var_dump($value['NomAnimal']);
+                array_push($animales,$value['NomAnimal']);
+            }
+            // var_dump($animales);
+            echo $datos = json_encode(array("animales" => $animales));
+
+        } else {
+// añaddir condicion de que despues de veterinaria no haya nada
+            $todasFotosAnim = [];
+
+            //info de los clientes
+            include_once('../../model/ClientesAnimalesDao.php');
+            $consulta = new ClientesAnimalesDao();
+            $clientes = $consulta->select_clientes();
+
+            //info de los animales
+            foreach ($clientes as $key => $cliente) {
+                $cliente->foto = $rutaFinal . 'web/personas/' . $cliente->foto;
+                $consulta = new ClientesAnimalesDao();
+                $animales = $consulta->select_animales_cliente($cliente->idCliente);
+                
+                //foto del animal anterior
+                foreach ($animales as $key => $animal) {
+                    $consulta = new ClientesAnimalesDao();
+                    $fotoAnimal = $consulta->select_fotos_animal($animal->NumHistorial);
+                    
+                    foreach ($fotoAnimal as $key => $value) {
+                        array_push($todasFotosAnim,$rutaFinal . 'web/animales/' . $value['nombreFoto']);
+                    }
+
+                    $animal->nombreFoto = $todasFotosAnim;
+                    $todasFotosAnim = [];
+                }
+
+                $cliente->animales = (array)$animales;
             }
 
-            $cliente->animales = (array)$animales;
-        }
-        // var_dump($clientes);
-        // var_dump($ruta);
+            echo $datos = json_encode(array("clientes" => $clientes));
 
-        echo $datos = json_encode($clientes);
+            // ------------------
+
+            // $todasFotosAnim = [];
+
+            // include_once('../../model/ClientesAnimalesDao.php');
+            // $consulta = new ClientesAnimalesDao();
+            // $clientes = $consulta->select_clientes();
+
+            // foreach ($clientes as $key => $cliente) {
+            //     $cliente->foto = $rutaFinal . 'web/personas/' . $cliente->foto;
+            //     $consulta = new ClientesAnimalesDao();
+            //     $animales = $consulta->select_animales_cliente($cliente->idCliente);
+
+            //     var_dump($animales);
+            // }
+
+            // echo $datos = json_encode(array("clientes" => $clientes));
+        }
     }
-}
 }
 ?>

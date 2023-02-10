@@ -25,12 +25,35 @@ class ClientesAnimalesDao {
         }
         return $info;
     }
+    // public function select_animales_cliente($idCliente) {
+    //     try {
+    //         $sql = "SELECT an.NumHistorial, an.NomAnimal, an.idTipo, ti.NombreTipo, fo.nombreFoto 
+    //                     FROM animales an
+    //                         JOIN tipoanimal ti on ti.idTipo=an.idTipo
+    //                         JOIN fotosani fo on fo.NumHistorial=an.NumHistorial
+    //                 WHERE idCliente=?;";
+    //         $consulta = $this->conexion->prepare($sql);
+    //         $consulta->bindParam(1, $idCliente);
+    //         $valor_devuelto = $consulta->execute();
+    //         while ($fila = $consulta->fetch(PDO::FETCH_OBJ)) {
+    //             $info[] = $fila;
+    //         }
+    //         $consulta->closeCursor();
+    //         $this->cerrar_conexion();
+    //     } catch (PDOException $e) {
+    //         echo "<br>Error:" . $e->getMessage();
+    //         echo "<br>Código del error:" . $e->getCode();
+    //         echo "<br>Fichero error:" . $e->getFile();
+    //         echo "<br>Línea del error:" . $e->getLine();
+    //         exit;
+    //     }
+    //     return $info;
+    // }
     public function select_animales_cliente($idCliente) {
         try {
-            $sql = "SELECT an.NumHistorial, an.NomAnimal, an.idTipo, ti.NombreTipo, fo.nombreFoto 
+            $sql = "SELECT an.NumHistorial, an.NomAnimal, an.idTipo, ti.NombreTipo
                         FROM animales an
                             JOIN tipoanimal ti on ti.idTipo=an.idTipo
-                            JOIN fotosani fo on fo.NumHistorial=an.NumHistorial
                     WHERE idCliente=?;";
             $consulta = $this->conexion->prepare($sql);
             $consulta->bindParam(1, $idCliente);
@@ -69,28 +92,20 @@ class ClientesAnimalesDao {
         }
         return $info;
     }
-    private function cerrar_conexion() {
-        $this->conexion = NULL;
-    }
-
-
-
-
-
-
-
-
-
-
-
-    public function select_alias($idCliente)
+    public function select_animales_id($id)
     {
+        $info = [];
         try {
-            $sql = "SELECT NomCliente as nombre, foto FROM clientes WHERE idCliente = ?;";
+            $sql = "SELECT an.NomAnimal 
+                    FROM animales an
+                        JOIN clientes cl on cl.idCliente =  an.idCliente
+                    WHERE cl.idCliente = ?;";
             $consulta = $this->conexion->prepare($sql);
-            $consulta->bindParam(1, $idCliente);
+            $consulta->bindParam(1, $id, PDO::PARAM_INT);
             $valor_devuelto = $consulta->execute();
-            $informacion = $consulta->fetch(PDO::FETCH_ASSOC);
+            while ($fila = $consulta->fetch(PDO::FETCH_ASSOC)) {
+                $info[] = $fila;
+            }
             $consulta->closeCursor();
             $this->cerrar_conexion();
         } catch (PDOException $e) {
@@ -100,7 +115,37 @@ class ClientesAnimalesDao {
             echo "<br>Línea del error:" . $e->getLine();
             exit;
         }
-        return $informacion;
+        return $info;
+    }
+    public function select_animales_cliente_paginado($idCliente,$inicio,$cantidad){
+        $info = [];
+        try {
+            $sql = "SELECT an.NumHistorial, an.NomAnimal, an.idTipo, ti.NombreTipo
+                        FROM animales an
+                            JOIN tipoanimal ti on ti.idTipo=an.idTipo
+                    WHERE idCliente=?
+                    LIMIT ?,?;";
+            $consulta = $this->conexion->prepare($sql);
+            $consulta->bindParam(1, $idCliente, PDO::PARAM_INT);
+            $consulta->bindParam(2, $inicio, PDO::PARAM_INT);
+            $consulta->bindParam(3, $cantidad, PDO::PARAM_INT);
+            $valor_devuelto = $consulta->execute();
+            while ($fila = $consulta->fetch(PDO::FETCH_OBJ)) {
+                $info[] = $fila;
+            }
+            $consulta->closeCursor();
+            $this->cerrar_conexion();
+        } catch (PDOException $e) {
+            echo "<br>Error:" . $e->getMessage();
+            echo "<br>Código del error:" . $e->getCode();
+            echo "<br>Fichero error:" . $e->getFile();
+            echo "<br>Línea del error:" . $e->getLine();
+            exit;
+        }
+        return $info;
+    }
+    private function cerrar_conexion() {
+        $this->conexion = NULL;
     }
 }
 

@@ -1,5 +1,5 @@
 <?php
-include_once('database/Conectar.php');
+// include_once('database/Conectar.php');
 class IntervalosDao
 {
     private $conexion;

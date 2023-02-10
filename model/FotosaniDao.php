@@ -1,5 +1,5 @@
 <?php
-include_once('database/Conectar.php');
+// include_once('database/Conectar.php');
 class FotosaniDao
 {
     private $conexion;
@@ -59,6 +59,45 @@ class FotosaniDao
             exit;
         }
         return $fotos;
+    }
+    public function actualizarFoto($numHistorial,$nuevaFoto){
+        // var_dump($nuevaFoto);
+        try {
+            $sql = "UPDATE fotosani SET nombreFoto=? WHERE NumHistorial=?";
+
+            $consulta = $this->conexion->prepare($sql);
+            $consulta->bindParam(1, $nuevaFoto);
+            $consulta->bindParam(2, $numHistorial, PDO::PARAM_INT);
+            $valor_devuelto = $consulta->execute();
+            $consulta->fetch(PDO::FETCH_ASSOC);
+            $consulta->closeCursor();
+            $this->cerrar_conexion();
+        } catch (PDOException $e) {
+            echo "<br>Error:" . $e->getMessage();
+            echo "<br>Código del error:" . $e->getCode();
+            echo "<br>Fichero error:" . $e->getFile();
+            echo "<br>Línea del error:" . $e->getLine();
+            exit;
+        }
+    }
+    public function select_una_foto_ani($animal){
+        try {
+            $sql = "SELECT nombreFoto FROM fotosani WHERE NumHistorial=?";
+
+            $consulta = $this->conexion->prepare($sql);
+            $consulta->bindParam(1, $animal, PDO::PARAM_INT);
+            $valor_devuelto = $consulta->execute();
+            $info=$consulta->fetch(PDO::FETCH_ASSOC);
+            $consulta->closeCursor();
+            $this->cerrar_conexion();
+        } catch (PDOException $e) {
+            echo "<br>Error:" . $e->getMessage();
+            echo "<br>Código del error:" . $e->getCode();
+            echo "<br>Fichero error:" . $e->getFile();
+            echo "<br>Línea del error:" . $e->getLine();
+            exit;
+        }
+        return $info;
     }
     private function cerrar_conexion()
     {

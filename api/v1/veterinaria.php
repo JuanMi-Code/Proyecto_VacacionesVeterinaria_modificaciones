@@ -1,12 +1,11 @@
 <?php
-const DIR = [0 => "../../controller/", 1 => "../../model/", 2 => "../../database/", 3 =>"./v1/"];
+const DIR = [0 => "../../controller/", 1 => "../../model/", 2 => "../../database/", 3 =>"./"];
 spl_autoload_register(function ($clase) {
     if (file_exists(DIR[0] . $clase . ".php")) require_once DIR[0] . $clase . ".php";
     if (file_exists(DIR[1] . $clase . ".php")) require_once DIR[1] . $clase . ".php";
     if (file_exists(DIR[2] . $clase . ".php")) require_once DIR[2] . $clase . ".php";
     if (file_exists(DIR[3] . $clase . ".php")) require_once DIR[3] . $clase . ".php";
 });
-
 
 // include "funciones.php";
 cors();
@@ -19,33 +18,36 @@ $method = $_SERVER['REQUEST_METHOD'];
 //     // loginToken();
     
 // } else {
-
+    $rutaDestino = explode("/",$_SERVER['REQUEST_URI']);
     switch ($method) {
-        case 'GET': // consulta         
-            include("Get.php");
-            Get::getClientesAnimales();   
-            // $get = new Get();
-            // $get->getClientesAnimales();
+        case 'GET': // consulta 
+            Get::getClientesAnimales();
             break;
-        case 'POST': // inserta   
+        
+            case 'POST': // inserta       
             
-            $rutaDestino = explode("/",$_SERVER['REQUEST_URI']);
             if ($rutaDestino[5]=="login") {
-                include("Post.php");
-                // Post::login();
                 Post::loginToken();
-            }else if ($rutaDestino[5]=="cliente"&&$rutaDestino[6]=="id") {
-                include("Post.php");
+            }else if ($rutaDestino[5]=="cliente"&&is_numeric($rutaDestino[6])) {
                 Post::subirAnimal();
-
             }
             break;
-        case 'PUT': // actualiza
-            //updateAlimento();
+        
+            case 'PUT': // actualiza
+            // $rutaDestino = explode("/",$_SERVER['REQUEST_URI']);
+            if ($rutaDestino[5]=="cliente"&&is_numeric($rutaDestino[6])&&$rutaDestino[7]=="animal"&&is_numeric($rutaDestino[8])&&isset($rutaDestino[9])&&$rutaDestino[9]=="cita?op=reservar") {
+                Put::pedirCita();
+            }else if($rutaDestino[5]=="cliente"&&is_numeric($rutaDestino[6])&&$rutaDestino[7]=="animal"&&is_numeric($rutaDestino[8])&&isset($rutaDestino[9])&&$rutaDestino[9]=="cita?op=anular"){
+                
+            }else if ($rutaDestino[5]=="cliente"&&is_numeric($rutaDestino[6])&&$rutaDestino[7]=="animal"&&is_numeric($rutaDestino[8])) {
+                Put::actualizarImagenAnimal();
+            }
             break;
+
         case 'DELETE': // elimina
-            // deleteAlimento();
+                Delete::borrarAnimal();
             break;
+
         default:  // METODO NO SOPORTADO       
             header("HTTP/1.0 400 Bad Request");
             break;
