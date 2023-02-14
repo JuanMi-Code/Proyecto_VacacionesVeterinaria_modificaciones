@@ -23,9 +23,19 @@ class Get {
 
         $rutaDestino = explode("/",$_SERVER['REQUEST_URI']);
 
-        if (is_numeric($rutaDestino[5]=="cliente"&&is_numeric($rutaDestino[6])&&$rutaDestino[7]=="animal"&&is_numeric($rutaDestino[8]))) {
+        if (isset($rutaDestino[5])&&$rutaDestino[5]=="tipos") {
+
+            $consulta=new tipoAnimalDao();
+            $tipos=$consulta->select_tipos_api();
+            // var_dump($tipos);
+            echo $info = json_encode(array("tipos" => $tipos));
             
-            echo "hola";
+        }else if (isset($rutaDestino[5])&&$rutaDestino[5]=="cliente"&&is_numeric($rutaDestino[6])&&$rutaDestino[7]=="animal"&&is_numeric($rutaDestino[8])) {
+            
+            $consulta=new CitasDao();
+            $citas=$consulta->select_citas_animal($rutaDestino[8]);
+            // var_dump($citas);
+            echo $info = json_encode(array("citas" => $citas));
 
         }else if (isset($_REQUEST['inicio'])&&isset($_REQUEST['cantidad'])) {
             

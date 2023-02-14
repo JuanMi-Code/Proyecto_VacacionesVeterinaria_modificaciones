@@ -68,6 +68,31 @@ class CitasDao
             exit;
         }
     }
+    public function select_citas_animal($numHistorial){
+        $citas=[];
+        try {
+            $sql = "SELECT ci.fecha as fecha, inte.texto as intervalo, an.NomAnimal as nombreAnimal
+                    FROM citas as ci
+                    JOIN intervalos as inte on inte.idIntervalo = ci.idIntervalo
+                    JOIN animales as an on an.NumHistorial = ci.NumHistorial
+                    WHERE an.NumHistorial=?";
+            $consulta = $this->conexion->prepare($sql);
+            $consulta->bindParam(1, $numHistorial, PDO::PARAM_INT);
+            $valor_devuelto = $consulta->execute();
+            while ($fila = $consulta->fetch(PDO::FETCH_OBJ)) {
+                $citas[] = $fila;
+            }
+            $consulta->closeCursor();
+            $this->cerrar_conexion();
+        } catch (PDOException $e) {
+            echo "<br>Error:" . $e->getMessage();
+            echo "<br>Código del error:" . $e->getCode();
+            echo "<br>Fichero error:" . $e->getFile();
+            echo "<br>Línea del error:" . $e->getLine();
+            exit;
+        }
+        return $citas;
+    }
     private function cerrar_conexion()
     {
         $this->conexion = NULL;
